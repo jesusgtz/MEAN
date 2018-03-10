@@ -1,0 +1,19 @@
+{
+  "name": "mean",
+  "version": "1.0.0",
+  "description": "Backend para red social",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusgtz/MEAN.git"
+  },
+  "author": "Jesus Gutierrez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jesusgtz/MEAN/issues"
+  },
+  "homepage": "https://github.com/jesusgtz/MEAN#readme"
+}
