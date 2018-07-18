@@ -6,7 +6,7 @@ var port = 3000;
 
 //Conexion a base de datos
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/mean')
+mongoose.connect('mongodb://localhost:27017/curso_mean_social', {useNewUrlParser: true})
 	.then(() => {
 		console.log("Connected to mean db");
 
