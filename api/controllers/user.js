@@ -91,6 +91,7 @@ function loginUser(req, res) {
 			bcrypt.compare(password, user.password, (err, check) => {
 				if(check) {
 					//devolver datos de usuario. TODO: tokens
+					user.password = undefined;
 					return res.status(200).send({user});
 				} else {
 					return res.status(404).send({
