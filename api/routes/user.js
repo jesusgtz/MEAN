@@ -8,6 +8,7 @@ var api = express.Router();
 
 api.get('/home', userController.home);
 api.get('/pruebas', md_auth.ensureAuth, userController.pruebas);
+api.get('/user/:id', md_auth.ensureAuth, userController.getUser);
 api.post('/register', userController.saveUser);
 api.post('/login', userController.loginUser);
 
