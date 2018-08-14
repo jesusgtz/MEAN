@@ -4,6 +4,8 @@ var User = require('../models/user');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../services/jwt');
 var mongoosePaginate = require('mongoose-pagination');
+var fs = require('fs');
+var path = require('path');
 
 function home(req, res) {
 	res.status(200).send({
@@ -190,6 +192,37 @@ function updateUser(req, res) {
 }
 
 
+function uploadImage(req, res) {
+	var userId = req.params.id;
+
+	if(req.files) {
+		var file_path = req.files.image.path;
+		var file_name = file_path.split('\\')[2];
+		var file_ext = file_name.split('\.')[1];
+
+		if(userId != req.user.sub) {
+			removeFiles(res, file_path, 'No tienes permisos para cambiar la imagen');
+		}
+
+		if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg') {
+			//Actualizar documento de usuario loggeado
+		} else {
+			removeFiles(res, file_path, 'Extension no valida');
+		}
+	} else {
+		return res.status(200).send({
+			message: 'No se han subido imagenes'
+		});
+	}
+}
+
+
+function removeFiles(res, file_path, message) {
+	fs.unlink(file_path, (err) => {
+		return res.status(200).send({message: message});
+	});
+}
+
 module.exports = {
 	home,
 	pruebas,
@@ -197,5 +230,6 @@ module.exports = {
 	loginUser,
 	getUser,
 	getUsers,
-	updateUser
+	updateUser,
+	uploadImage
 }
