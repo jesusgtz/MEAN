@@ -201,13 +201,29 @@ function uploadImage(req, res) {
 		var file_ext = file_name.split('\.')[1];
 
 		if(userId != req.user.sub) {
-			removeFiles(res, file_path, 'No tienes permisos para cambiar la imagen');
+			return removeFiles(res, file_path, 'No tienes permisos para cambiar la imagen');
 		}
 
 		if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg') {
-			//Actualizar documento de usuario loggeado
+			User.findByIdAndUpdate(userId, {image:file_name}, {new:true}, (err, userUpdated) => {
+				if(err) {
+					return res.status(500).send({
+						message: 'Error en la peticion'
+					});
+				}
+
+				if(!userUpdated) {
+					return res.status(404).send({
+						message: 'No se ha podido actualizar el usuario'
+					});
+				}
+
+				return res.status(200).send({
+					user: userUpdated
+				});		
+			});
 		} else {
-			removeFiles(res, file_path, 'Extension no valida');
+			return removeFiles(res, file_path, 'Extension no valida');
 		}
 	} else {
 		return res.status(200).send({
