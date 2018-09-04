@@ -39,12 +39,14 @@ function getFollowingUsers(req, res) {
 	var page = 1;
 	var itemsPerPage = 4;
 
-	if(req.params.id) {
+	if(req.params.id && req.params.page) {
 		userId = req.params.id;
 	}
 
 	if(req.params.page) {
 		page = req.params.page;
+	} else {
+		page = req.params.id;
 	}
 
 	Follow.find({user: userId}).populate({path: 'followed'}).paginate(page, itemsPerPage, (err, follows, total) => {
