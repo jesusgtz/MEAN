@@ -12,6 +12,7 @@ api.get('/home', userController.home);
 api.get('/pruebas', md_auth.ensureAuth, userController.pruebas);
 api.get('/user/:id', md_auth.ensureAuth, userController.getUser);
 api.get('/users/:page?', md_auth.ensureAuth, userController.getUsers);
+api.get('/counters/:id?', md_auth.ensureAuth, userController.getCounters);
 api.put('/update-user/:id', md_auth.ensureAuth, userController.updateUser);
 api.post('/upload-image-user/:id', [md_auth.ensureAuth, md_upload], userController.uploadImage);
 api.post('/register', userController.saveUser);
