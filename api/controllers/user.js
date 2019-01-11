@@ -176,14 +176,44 @@ function getUsers(req, res) {
 			message: 'No hay usuarios disponibles'
 		});
 
-		return res.status(200).send({
-			users,
-			total,
-			pages: Math.ceil(total/itemsPerPage)
+		followUserIds(identity_user_id).then((value) => {
+			return res.status(200).send({
+				users,
+				users_following: value.following,
+				users_follow_me: value.followed,
+				total,
+				pages: Math.ceil(total/itemsPerPage)
+			});
 		});
 	});
 }
 
+async function followUserIds(user_id) {
+	var following = await Follow.find({"user": user_id}).select({'_id':0, '__v':0, 'user':0}).exec((err, follows) => {
+		return follows;
+	});
+
+	var following_clean = [];
+
+	following.forEach((follow) => {
+		following_clean.push(follow.followed);
+	});
+
+	var followed = await Follow.find({"followed": user_id}).select({'_id':0, '__v':0, 'followed':0}).exec((err, follows) => {
+		return follows;
+	});
+
+	var follow_me_clean = [];
+
+	followed.forEach((follow) => {
+		follow_me_clean.push(follow.user);
+	});
+
+	return {
+		following: following_clean,
+		followed: follow_me_clean
+	};
+}
 
 function updateUser(req, res) {
 	var userId = req.params.id;
