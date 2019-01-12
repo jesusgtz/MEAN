@@ -91,8 +91,29 @@ function getPublications(req, res) {
 	});
 }
 
+function getPublication(req, res) {
+	var publicationId = req.params.id;
+
+	Publication.findById(publicationId, (err, publication) => {
+		if(err) {
+			return res.status(500).send({
+				message: "Error en consulta de publicacion"
+			})
+		}
+
+		if(!publication) {
+			return res.status(404).send({
+				message: "No se encontraron publicacion"
+			})
+		}
+
+		return res.status(200).send({publication});
+	})
+}
+
 module.exports = {
 	prueba,
 	savePublication,
-	getPublications
+	getPublications,
+	getPublication
 };

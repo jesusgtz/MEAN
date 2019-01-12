@@ -11,5 +11,6 @@ var md_upload = multipart({ uploadDir: './uploads/publications' });
 api.get('/prueba-pub', md_auth.ensureAuth, publicationController.prueba);
 api.post('/publication', md_auth.ensureAuth, publicationController.savePublication);
 api.get('/publications/:page?', md_auth.ensureAuth, publicationController.getPublications);
+api.get('/publication/:id', md_auth.ensureAuth, publicationController.getPublication);
 
 module.exports = api;
