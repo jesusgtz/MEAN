@@ -45,7 +45,7 @@ function getReceivedMessages(req, res) {
 		page = req.params.page;
 	}
 
-	Message.find({receiver: user_id}).populate('emmiter').paginate(page, itemsPerPage, (err, messages, total) => {
+	Message.find({receiver: user_id}).populate('emmiter', 'name surname _id image nick').paginate(page, itemsPerPage, (err, messages, total) => {
 		if(err) {
 			return res.status(500).send({message: 'Error'});
 		}
