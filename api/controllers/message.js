@@ -62,8 +62,35 @@ function getReceivedMessages(req, res) {
 	});
 }
 
+function getEmmitMessages(req, res) {
+	var user_id = req.user.sub;
+	var page = 1;
+	var itemsPerPage = 4;
+
+	if(req.params.page) {
+		page = req.params.page;
+	}
+
+	Message.find({emmiter: user_id}).populate('emmiter receiver', 'name surname _id image nick').paginate(page, itemsPerPage, (err, messages, total) => {
+		if(err) {
+			return res.status(500).send({message: 'Error'});
+		}
+		
+		if(!messages) {
+			return res.status(404).send({message: 'No hay mensajes'});
+		}
+
+		return res.status(200).send({
+			total: total,
+			pages: Math.ceil(total/itemsPerPage),
+			messages
+		});	
+	});
+}
+
 module.exports = {
 	probando,
 	saveMessage,
-	getReceivedMessages
+	getReceivedMessages,
+	getEmmitMessages
 }
